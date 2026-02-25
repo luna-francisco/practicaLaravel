@@ -8,24 +8,75 @@
 @plugin "daisyui";
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
-    /*    style="height:10vh"*/
-    --height-header:15vh;
-    --height-main:65vh;
-    --height-footer:10vh;
-    --height-nav:10vh;
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-    /*    style="backgroud-color:#ffAAGG"*/
-    --color-header:#56D9E5;
-    --color-nav:#A4E0E6;
-    --color-main:#FFFFFF;
-    --color-footer:#000000;
-    --color-titulo:#8C1D07;
+    /* 📏 Alturas */
+    --height-header: 14vh;
+    --height-main: 66vh;
+    --height-footer: 10vh;
+    --height-nav: 10vh;
 
+    /* 🎨 PALETA AZUL SUAVE Y MODERNA */
+    --color-header: linear-gradient(135deg, #1E3A8A, #2563EB);
+    --color-nav: #1D4ED8;
+    --color-main: #F1F5F9;
+    --color-footer: #0F172A;
+    --color-titulo: #FFFFFF;
 
-
+    --color-accent: #3B82F6;
+    --color-accent-soft: #DBEAFE;
 }
-.boton{
-    @apply bg-amber-300 text-5xl
+
+/* 🌊 HEADER moderno con gradiente azul y efecto glass */
+.header-moderno {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 58, 138, 0.9),
+        rgba(37, 99, 235, 0.9)
+    );
+    @apply backdrop-blur-md shadow-lg flex items-center justify-center;
+    height: var(--height-header);
+}
+
+/* ✨ Título moderno premium legible */
+.titulo-moderno {
+    @apply text-4xl md:text-5xl font-extrabold tracking-tight text-white px-4 py-2 rounded-md;
+    font-family: var(--font-sans);
+    letter-spacing: -0.02em;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* 🧭 NAV elegante */
+.nav-moderno {
+    background-color: var(--color-nav);
+    @apply flex items-center justify-center shadow-md;
+    height: var(--height-nav);
+}
+
+/* 📦 MAIN limpio y suave */
+.main-moderno {
+    background-color: var(--color-main);
+    @apply flex items-center justify-center;
+    height: var(--height-main);
+}
+
+/* 🔻 FOOTER minimalista */
+.footer-moderno {
+    background-color: var(--color-footer);
+    @apply text-white flex items-center justify-center text-sm tracking-wide;
+    height: var(--height-footer);
+}
+
+/* 🌟 Botón azul elegante */
+.boton {
+    @apply bg-blue-600 text-white text-lg font-semibold px-6 py-3
+    rounded-xl shadow-md transition-all duration-300
+    hover:bg-blue-700 hover:scale-105 hover:shadow-xl;
+}
+
+/* 💎 Card moderna */
+.card-moderna {
+    @apply bg-white rounded-2xl shadow-lg p-8
+    transition-all duration-300 hover:shadow-xl;
 }

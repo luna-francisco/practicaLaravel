@@ -10,12 +10,12 @@
     @vite (["resources/css/app.css", "resources/js/app.js"])
 
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 <x-layouts.header />
 <x-layouts.nav />
 
 
-<main class="h-main bg-main">
+<main class="flex-1 bg-main">
     {{$slot}}
 </main>
 <x-layouts.footer />

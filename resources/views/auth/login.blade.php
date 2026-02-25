@@ -1,48 +1,90 @@
 <x-layouts.layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-<div class="flex justify-center items-center">
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+    <div class="min-h-screen flex items-start justify-center bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 px-4 pt-20">
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <!-- Título -->
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800">Bienvenido 👋</h2>
+                <p class="text-gray-500 text-sm mt-2">Inicia sesión en tu cuenta</p>
+            </div>
+
+            <!-- Mensaje de sesión -->
+            <x-auth-session-status class="mb-4" :status="session('status')" />
+
+            <form method="POST" action="{{ route('login') }}" class="space-y-5">
+                @csrf
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">
+                        Correo electrónico
+                    </label>
+                    <input id="email"
+                           type="email"
+                           name="email"
+                           value="{{ old('email') }}"
+                           required autofocus
+                           class="mt-1 w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+
+                    @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">
+                        Contraseña
+                    </label>
+                    <div class="relative">
+                        <input id="password"
+                               type="password"
+                               name="password"
+                               required
+                               class="mt-1 w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+
+                        <button type="button"
+                                onclick="togglePassword()"
+                                class="absolute right-4 top-4 text-sm text-gray-500 hover:text-indigo-600">
+                            Mostrar
+                        </button>
+                    </div>
+
+                    @error('password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Recordarme -->
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center text-sm text-gray-600">
+                        <input type="checkbox"
+                               name="remember"
+                               class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                        <span class="ml-2">Recordarme</span>
+                    </label>
+
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}"
+                           class="text-sm text-indigo-600 hover:underline">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    @endif
+                </div>
+
+                <!-- Botón -->
+                <button type="submit"
+                        class="w-full py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
+                    Iniciar sesión
+                </button>
+            </form>
         </div>
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</div>
+    <script>
+        function togglePassword() {
+            const input = document.getElementById('password');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+    </script>
 </x-layouts.layout>

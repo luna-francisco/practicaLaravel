@@ -1,4 +1,4 @@
-<footer class=" h-footer bg-footer footer sm:footer-horizontal  text-neutral-content items-center p-4">
+<footer class="min-h-footer shrink-0 bg-footer footer sm:footer-horizontal text-neutral-content items-center p-4">
     <aside class="grid-flow-col items-center">
         <svg
             width="36"
