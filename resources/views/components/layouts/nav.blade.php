@@ -40,11 +40,6 @@
                 class="{{ $baseLink }} {{ request()->is('alumnos*') ? $activeLink : $idleLink }}"
                 @click="open = false"
             >Alumnos</a>
-            <a
-                href="/profesores"
-                class="{{ $baseLink }} {{ request()->is('profesores*') ? $activeLink : $idleLink }}"
-                @click="open = false"
-            >Profesores</a>
         </div>
     </div>
 </nav>

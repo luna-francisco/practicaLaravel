@@ -12,7 +12,6 @@ Route::get('/', [MainController::class, 'index']) -> name('main');
 Route::view("about","about");
 Route::view("noticias","noticias");
 Route::view("alumnos","alumnos");
-Route::view("profesores","profesores");
 
 //Ruta de prueba para tarjeta 1
 Route::get('/tarjeta/{id}', [TarjetaController::class, 'show'])->name('tarjeta.show');

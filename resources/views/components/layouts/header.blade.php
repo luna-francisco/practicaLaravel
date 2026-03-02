@@ -5,7 +5,9 @@
                 <img class="h-10 w-auto sm:h-12 md:h-14 lg:h-16 shrink-0 rounded-md" src="{{ asset('/images/logo.png') }}" alt="logo">
                 <div class="min-w-0">
                     <p class="text-slate-500 text-xs sm:text-sm font-medium tracking-widest uppercase">Instituto</p>
-                    <h1 class="text-slate-900 font-extrabold leading-tight text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center lg:text-left truncate">Gestion de Instituto</h1>
+                    <h1 class="text-slate-900 font-extrabold leading-tight text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center lg:text-left truncate">
+                        <a href="{{ route('main') }}" class="hover:text-blue-700 transition-colors duration-200">Gestion de Instituto</a>
+                    </h1>
                 </div>
             </div>
 
