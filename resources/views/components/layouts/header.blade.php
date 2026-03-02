@@ -1,26 +1,34 @@
-<header class="h-header bg-header flex flex-row justify-between items-center p-3">
+<header class="bg-header px-3 py-3 sm:px-4 md:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-7xl rounded-2xl bg-white p-3 sm:p-4 shadow-md ring-1 ring-slate-200">
+        <div class="flex flex-col gap-3 md:gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div class="flex items-center justify-center lg:justify-start gap-3 md:gap-4 min-w-0">
+                <img class="h-10 w-auto sm:h-12 md:h-14 lg:h-16 shrink-0 rounded-md" src="{{ asset('/images/logo.png') }}" alt="logo">
+                <div class="min-w-0">
+                    <p class="text-slate-500 text-xs sm:text-sm font-medium tracking-widest uppercase">Instituto</p>
+                    <h1 class="text-slate-900 font-extrabold leading-tight text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center lg:text-left truncate">Gestion de Instituto</h1>
+                </div>
+            </div>
 
-    <img class="max-h-full" src="{{asset("/images/logo.png")}}" alt="logo">
+            @guest()
+                <div class="w-full lg:w-auto flex flex-col sm:flex-row md:justify-center lg:justify-end gap-2 md:gap-3">
+                    <a href="{{ route('login') }}" class="w-full sm:w-auto md:min-w-[10rem] lg:min-w-0">
+                        <button class="btn btn-sm md:btn-md w-full border-0 bg-blue-600 text-white hover:bg-blue-700 sm:w-auto">Iniciar</button>
+                    </a>
+                    <a href="{{ route('register') }}" class="w-full sm:w-auto md:min-w-[10rem] lg:min-w-0">
+                        <button class="btn btn-sm md:btn-md w-full border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 sm:w-auto">Registrarse</button>
+                    </a>
+                </div>
+            @endguest
 
-    <h1 class="titulo-moderno">Gestion de Instituto</h1>
-
-    @guest()
-    <div class="space-x-2">
-        <a href="login"><button class="btn btn-sm btn-primary">Iniciar</button></a>
-        <a href="register"><button class="btn btn-sm btn-primary">Registrarse</button></a>
+            @auth
+                <div class="w-full lg:w-auto flex flex-col sm:flex-row items-start sm:items-center md:justify-center lg:justify-end gap-2 md:gap-3">
+                    <span class="inline-flex items-center rounded-xl bg-slate-100 px-3 py-2 text-slate-700 font-semibold text-sm sm:text-base">{{ auth()->user()->name }}</span>
+                    <form action="{{ route('logout') }}" method="POST" class="w-full sm:w-auto md:min-w-[10rem] lg:min-w-0">
+                        @csrf
+                        <button class="btn btn-sm md:btn-md w-full border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 sm:w-auto">Salir</button>
+                    </form>
+                </div>
+            @endauth
+        </div>
     </div>
-    @endguest
-
-    @auth
-
-        {{auth()->user()->name}}
-        <form action="{{route("logout")}}" method="POST">
-
-            @csrf
-            <button class="btn btn-sm btn-primary">Salir</button>
-        </form>
-    @endauth
-
-
 </header>
-
