@@ -1,16 +1,20 @@
 <?php
 
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TarjetaController;
 
-Route::get('/', function () {
-    return view('main');
-})->name("main");
+Route::get('/', [MainController::class, 'index']) -> name('main');
+
+
 
 Route::view("about","about");
 Route::view("noticias","noticias");
 Route::view("alumnos","alumnos");
-Route::view("profesores","profesores");
+
+//Ruta de prueba para tarjeta 1
+Route::get('/tarjeta/{id}', [TarjetaController::class, 'show'])->name('tarjeta.show');
 
 //Pruebas de rutas parametrizadas
 Route::get("/alumno/{numero}/{seccion}", fn($numero, $seccion) =>  view("alumno", ["numero" => $numero, "seccion" => $seccion]));

@@ -1,5 +1,9 @@
 <x-layouts.layout>
-    <h1>Pagina de prueba para paramtros, rutas por GET</h1><br>
-    <h2>Primer parametro pasado por get en ruta: {{$parametro1}}</h2>
-    <h2>Segundo parametro pasado por get en ruta: {{$parametro2}}</h2>
+    <section class="page-wrap">
+        <article class="page-card">
+            <h1 class="page-title">Pagina De Prueba</h1>
+            <p class="page-subtitle">Primer parametro por GET: <span class="font-semibold text-slate-800">{{ $parametro1 }}</span></p>
+            <p class="page-subtitle">Segundo parametro por GET: <span class="font-semibold text-slate-800">{{ $parametro2 }}</span></p>
+        </article>
+    </section>
 </x-layouts.layout>

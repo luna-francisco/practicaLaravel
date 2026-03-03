@@ -1,23 +1,54 @@
 <x-layouts.layout>
     @guest
-    <div
-        class="hero min-h-full"
-        style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);"
-    >
-        <div class="hero-overlay"></div>
-        <div class="hero-content text-neutral-content text-center">
-            <div class="max-w-md">
-                <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
-                <p class="mb-5">
-                    Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                    quasi. In deleniti eaque aut repudiandae et a id nisi.
-                </p>
-                <button class="btn btn-primary">Get Started</button>
+        <section class="page-wrap">
+            <div class="hero-shell py-6 md:py-10">
+                <div class="grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+                    <div>
+                        <span class="pill mb-4">Inicio</span>
+                        <h1 class="display-font text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-slate-900 max-w-4xl">Gestion de Instituto</h1>
+                        <div class="accent-rule mt-4"></div>
+                        <p class="mt-4 text-slate-600 max-w-3xl">Acceso web control de instituto</p>
+                        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                            <a href="{{ route('register') }}" class="btn-brand font-semibold">Crear cuenta</a>
+                            <a href="{{ route('login') }}" class="btn-ghost-light font-semibold">Inicio</a>
+                        </div>
+                    </div>
+                    <div class="hero-media">
+                        <img src="{{ asset('images/hero-wave.jpg') }}" alt="Visual institucional" loading="lazy" decoding="async" class="h-full w-full object-cover">
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-        @endguest
+        </section>
+    @endguest
+
     @auth
-        <h1>Estás registrado</h1>
+        <section class="page-wrap">
+            @php
+                $cards = [
+                    [1, 'Ejemplo de tarjeta', 'Descripcion introductoria del contenido de la tarjeta.'],
+                    [2, 'Ejemplo de tarjeta 2', 'Descripcion introductoria del contenido de la tarjeta.'],
+                    [3, 'Ejemplo de tarjeta 3', 'Descripcion introductoria del contenido de la tarjeta.'],
+                    [4, 'Ejemplo de tarjeta 4', 'Descripcion introductoria del contenido de la tarjeta.'],
+                    [5, 'Ejemplo de tarjeta 5', 'Descripcion introductoria del contenido de la tarjeta.'],
+                    [6, 'Ejemplo de tarjeta 6', 'Descripcion introductoria del contenido de la tarjeta.'],
+                ];
+            @endphp
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
+                @foreach ($cards as [$id, $title, $description])
+                    <article class="feature-card">
+                        <div class="feature-media">
+                            <img src="{{ asset('images/card-' . $id . '.svg') }}" loading="lazy" decoding="async" alt="{{ $title }}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="space-y-2 p-4 sm:p-5">
+                            <span class="card-tag">Contenido</span>
+                            <h2 class="display-font text-xl font-bold text-slate-900">{{ $title }}</h2>
+                            <p class="text-slate-600">{{ $description }}</p>
+                            <a href="{{ route('tarjeta.show', $id) }}" class="btn-brand">Acceder</a>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        </section>
     @endauth
 </x-layouts.layout>
