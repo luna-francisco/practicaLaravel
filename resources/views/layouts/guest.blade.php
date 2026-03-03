@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col">
+    <div class="site-chrome-wrap">
+        <div class="site-chrome-shell">
+            <x-layouts.header />
+            <x-layouts.nav />
+        </div>
+    </div>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-slate-900 antialiased bg-slate-100">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center px-3 py-6 sm:px-4 sm:py-10 bg-gradient-to-b from-slate-100 via-blue-50 to-slate-100">
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                <a href="/">
-                    <x-application-logo class="w-16 h-16 sm:w-20 sm:h-20 fill-current text-slate-500" />
-                </a>
-            </div>
-
-            <div class="w-full max-w-md mt-6 px-5 py-5 sm:px-6 sm:py-6 bg-white shadow-sm border border-slate-200 overflow-hidden rounded-2xl">
+    <main class="site-main">
+        <section class="page-wrap">
+            <div class="auth-card mx-auto max-w-md">
                 {{ $slot }}
             </div>
-        </div>
-    </body>
+        </section>
+    </main>
+
+    <x-layouts.footer />
+</body>
 </html>

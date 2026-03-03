@@ -1,36 +1,52 @@
-<header class="bg-header px-3 py-3 sm:px-4 md:px-6 lg:px-8">
-    <div class="mx-auto w-full max-w-7xl rounded-2xl bg-white p-3 sm:p-4 shadow-md ring-1 ring-slate-200">
-        <div class="flex flex-col gap-3 md:gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div class="flex items-center justify-center lg:justify-start gap-3 md:gap-4 min-w-0">
-                <img class="h-10 w-auto sm:h-12 md:h-14 lg:h-16 shrink-0 rounded-md" src="{{ asset('/images/logo.png') }}" alt="logo">
+<header>
+    <div class="mx-auto w-full max-w-7xl px-4 pt-4 pb-3 sm:px-6 sm:pt-5 sm:pb-3">
+        <div class="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div class="flex items-start gap-4">
+                <img class="h-12 w-auto sm:h-14 md:h-16 shrink-0" src="{{ asset('/images/logo.png') }}" alt="logo">
                 <div class="min-w-0">
-                    <p class="text-slate-500 text-xs sm:text-sm font-medium tracking-widest uppercase">Instituto</p>
-                    <h1 class="text-slate-900 font-extrabold leading-tight text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center lg:text-left truncate">
-                        <a href="{{ route('main') }}" class="hover:text-blue-700 transition-colors duration-200">Gestion de Instituto</a>
+                    <p class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase text-slate-500">Instituto</p>
+                    <h1 class="display-font text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-slate-900 truncate">
+                        <a href="{{ route('main') }}" class="hover:text-slate-700">Gestion de Instituto</a>
                     </h1>
+
                 </div>
             </div>
 
-            @guest()
-                <div class="w-full lg:w-auto flex flex-col sm:flex-row md:justify-center lg:justify-end gap-2 md:gap-3">
-                    <a href="{{ route('login') }}" class="w-full sm:w-auto md:min-w-[10rem] lg:min-w-0">
-                        <button class="btn btn-sm md:btn-md w-full border-0 bg-blue-600 text-white hover:bg-blue-700 sm:w-auto">Iniciar</button>
-                    </a>
-                    <a href="{{ route('register') }}" class="w-full sm:w-auto md:min-w-[10rem] lg:min-w-0">
-                        <button class="btn btn-sm md:btn-md w-full border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 sm:w-auto">Registrarse</button>
-                    </a>
+            @guest
+                <div class="flex flex-col sm:flex-row gap-2 lg:justify-end">
+                    <a href="{{ route('login') }}"><button class="btn-brand btn w-full sm:w-auto font-semibold">Iniciar</button></a>
+                    <a href="{{ route('register') }}"><button class="btn-ghost-light btn w-full sm:w-auto font-semibold">Registrarse</button></a>
                 </div>
             @endguest
 
             @auth
-                <div class="w-full lg:w-auto flex flex-col sm:flex-row items-start sm:items-center md:justify-center lg:justify-end gap-2 md:gap-3">
-                    <span class="inline-flex items-center rounded-xl bg-slate-100 px-3 py-2 text-slate-700 font-semibold text-sm sm:text-base">{{ auth()->user()->name }}</span>
-                    <form action="{{ route('logout') }}" method="POST" class="w-full sm:w-auto md:min-w-[10rem] lg:min-w-0">
-                        @csrf
-                        <button class="btn btn-sm md:btn-md w-full border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 sm:w-auto">Salir</button>
-                    </form>
+                <div x-data="{ open: false }" class="relative inline-block text-left">
+                    <button
+                        type="button"
+                        @click="open = !open"
+                        class="inline-flex items-center rounded-xl bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700"
+                    >
+                        {{ auth()->user()->name }}
+                        <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <div
+                        x-show="open"
+                        @click.outside="open = false"
+                        x-transition
+                        class="absolute right-0 z-50 mt-2 w-40 rounded-xl border border-slate-200 bg-white p-2 shadow-lg"
+                        style="display: none;"
+                    >
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button class="btn-ghost-light btn w-full font-semibold text-left">Salir</button>
+                        </form>
+                    </div>
                 </div>
             @endauth
+
         </div>
     </div>
 </header>

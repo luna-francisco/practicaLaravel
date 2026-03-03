@@ -6,31 +6,29 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-slate-100">
-        <div class="min-h-screen bg-gradient-to-b from-slate-100 via-blue-50 to-slate-100">
+    <body class="font-sans antialiased min-h-screen flex flex-col">
+        <div class="flex-1">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
                 <header class="px-4 pt-6 sm:px-6 lg:px-8">
-                    <div class="max-w-7xl mx-auto rounded-2xl border border-slate-200 bg-white px-4 py-5 shadow-sm sm:px-6">
+                    <div class="page-card max-w-7xl mx-auto px-4 py-5 sm:px-6">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
 
             <!-- Page Content -->
-            <main class="pb-8">
+            <main class="site-main pb-8">
                 {{ $slot }}
             </main>
         </div>
+        <x-layouts.footer />
     </body>
 </html>

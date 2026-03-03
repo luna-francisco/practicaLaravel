@@ -1,45 +1,23 @@
-<nav x-data="{ open: false }" class="bg-nav px-3 py-3 sm:px-4 md:px-6">
+<nav x-data="{ open: false }">
     @php
-        $baseLink = 'inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200';
-        $activeLink = 'bg-white text-blue-700 shadow-sm';
-        $idleLink = 'text-white/90 hover:text-white hover:bg-white/15';
+        $baseLink = 'nav-text-link';
+        $activeLink = 'nav-text-link-active';
+        $idleLink = '';
     @endphp
 
-    <div class="mx-auto w-full max-w-7xl rounded-2xl bg-white/10 p-2 backdrop-blur-sm ring-1 ring-white/20">
+    <div class="mx-auto w-full max-w-7xl px-4 pb-3 pt-1 sm:px-6 sm:pb-4 sm:pt-1">
         <div class="flex items-center justify-between md:hidden">
-            <span class="text-white/95 font-semibold text-sm">Menu</span>
-            <button
-                type="button"
-                class="btn btn-sm border-white/70 bg-transparent text-white hover:bg-white/15"
-                @click="open = !open"
-                :aria-expanded="open.toString()"
-                aria-controls="main-navigation-links"
-            >
-                <span x-show="!open">MENU</span>
-                <span x-show="open">CERRAR</span>
+            <span class="text-sm font-semibold text-slate-500 tracking-wide">Menu</span>
+            <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-slate-700 hover:bg-slate-100" @click="open = !open" :aria-expanded="open.toString()" aria-controls="main-navigation-links">
+                <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6l12 12M18 6l-12 12" /></svg>
             </button>
         </div>
 
-        <div
-            id="main-navigation-links"
-            class="mt-2 hidden flex-col gap-2 md:mt-0 md:flex md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-2 lg:gap-3"
-            :class="{ 'hidden': !open, 'flex': open }"
-        >
-            <a
-                href="/about"
-                class="{{ $baseLink }} {{ request()->is('about*') ? $activeLink : $idleLink }}"
-                @click="open = false"
-            >About</a>
-            <a
-                href="/noticias"
-                class="{{ $baseLink }} {{ request()->is('noticias*') ? $activeLink : $idleLink }}"
-                @click="open = false"
-            >Noticias</a>
-            <a
-                href="/alumnos"
-                class="{{ $baseLink }} {{ request()->is('alumnos*') ? $activeLink : $idleLink }}"
-                @click="open = false"
-            >Alumnos</a>
+        <div id="main-navigation-links" class="mt-2 hidden flex-col gap-1 md:mt-0 md:flex md:flex-row md:items-center md:justify-start md:gap-6" :class="{ 'hidden': !open, 'flex': open }">
+            <a href="/about" class="{{ $baseLink }} {{ request()->is('about*') ? $activeLink : $idleLink }}" @click="open = false">About</a>
+            <a href="/noticias" class="{{ $baseLink }} {{ request()->is('noticias*') ? $activeLink : $idleLink }}" @click="open = false">Noticias</a>
+            <a href="/alumnos" class="{{ $baseLink }} {{ request()->is('alumnos*') ? $activeLink : $idleLink }}" @click="open = false">Alumnos</a>
         </div>
     </div>
 </nav>

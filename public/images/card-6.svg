@@ -1,0 +1,21 @@
+<svg width="960" height="640" viewBox="0 0 960 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gA" x1="0" y1="0" x2="960" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#0284C7"/>
+    </linearGradient>
+    <radialGradient id="gB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(220 140) rotate(35) scale(260 180)">
+      <stop stop-color="#FDBA74" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#FDBA74" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gC" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(760 520) rotate(215) scale(340 220)">
+      <stop stop-color="#22D3EE" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="640" fill="url(#gA)"/>
+  <rect width="960" height="640" fill="url(#gB)"/>
+  <rect width="960" height="640" fill="url(#gC)"/>
+  <path d="M-40 482C120 390 249 530 410 477C569 424 674 292 858 331C941 349 1024 390 1024 390V680H-40V482Z" fill="white" fill-opacity="0.17"/>
+  <path d="M-40 525C112 445 258 560 396 534C568 501 699 404 882 429C965 442 1024 475 1024 475V680H-40V525Z" fill="white" fill-opacity="0.12"/>
+</svg>
