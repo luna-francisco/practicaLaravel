@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class Project extends Model
 {
-    /** @use HasFactory<\Database\Factories\StudentFactory> */
+    /** @use HasFactory<\Database\Factories\ProjectFactory> */
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'email',
-        'year',
-        'dni',
+        'description',
+        'hours',
+        'start_date',
     ];
 }

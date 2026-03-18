@@ -25,20 +25,17 @@
         <section class="page-wrap">
             @php
                 $cards = [
-                    [1, 'Ejemplo de tarjeta', 'Descripcion introductoria del contenido de la tarjeta.'],
-                    [2, 'Ejemplo de tarjeta 2', 'Descripcion introductoria del contenido de la tarjeta.'],
-                    [3, 'Ejemplo de tarjeta 3', 'Descripcion introductoria del contenido de la tarjeta.'],
-                    [4, 'Ejemplo de tarjeta 4', 'Descripcion introductoria del contenido de la tarjeta.'],
-                    [5, 'Ejemplo de tarjeta 5', 'Descripcion introductoria del contenido de la tarjeta.'],
-                    [6, 'Ejemplo de tarjeta 6', 'Descripcion introductoria del contenido de la tarjeta.'],
+                    [1, 'Gestion de Proyectos', 'CRUD completo de proyectos.', 'images/card-1.svg'],
+                    [2, 'Gestion de Estudiantes', 'CRUD completo de estudiantes.', 'images/estudiantes.jpg'],
+                    [3, 'Gestion de Profesores', 'CRUD completo de profesores.', 'images/profesores.jpg'],
                 ];
             @endphp
 
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
-                @foreach ($cards as [$id, $title, $description])
+                @foreach ($cards as [$id, $title, $description, $image])
                     <article class="feature-card">
                         <div class="feature-media">
-                            <img src="{{ asset('images/card-' . $id . '.svg') }}" loading="lazy" decoding="async" alt="{{ $title }}" class="w-full h-full object-cover">
+                            <img src="{{ asset($image) }}" loading="lazy" decoding="async" alt="{{ $title }}" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-2 p-4 sm:p-5">
                             <span class="card-tag">Contenido</span>

@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TarjetaController;
 
@@ -32,5 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('/projects', ProjectController::class);
+Route::resource('/students', StudentController::class)->only(['store', 'update', 'destroy']);
+Route::resource('/teachers', TeacherController::class)->only(['store', 'update', 'destroy']);
+
+
 
 require __DIR__.'/auth.php';

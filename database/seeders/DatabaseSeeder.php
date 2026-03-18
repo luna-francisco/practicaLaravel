@@ -17,14 +17,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::create([
+            'name' => 'Fran',
+            'email' => 'lunasancho.fl@gmail.com',
+            'password' => bcrypt('Vx8P9ysd')
         ]);
 
         $this->call([
             StudentsSeeder::class,
-            ]
-        )
+        ]);
+
+        $this->call([
+            ProjectSeeder::class,
+        ]);
     }
 }

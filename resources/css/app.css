@@ -168,6 +168,17 @@
         box-shadow: 0 12px 24px rgba(14, 165, 233, 0.35);
     }
 
+    .btn-brand-red {
+        @apply btn border-0 text-white;
+        background: linear-gradient(135deg, #dc2626 0%, #ef4444 56%, #be123c 100%);
+        box-shadow: 0 10px 22px rgba(220, 38, 38, 0.28);
+    }
+
+    .btn-brand-red:hover {
+        background: linear-gradient(135deg, #b91c1c 0%, #dc2626 54%, #9f1239 100%);
+        box-shadow: 0 12px 24px rgba(220, 38, 38, 0.35);
+    }
+
     .btn-ghost-light {
         @apply btn border;
         background: rgba(255, 255, 255, 0.58);
