@@ -84,18 +84,6 @@ npm run local
 
 La app queda disponible en `http://localhost:8000`.
 
-## Despliegue rapido en Railway (GitHub)
-
-1. Crea un proyecto nuevo en Railway y elige "Deploy from GitHub repo".
-2. Selecciona el repo `luna-francisco/practicaLaravel`.
-3. Añade las variables de entorno de tu `.env` en "Add Variables".
-4. Pulsa "Deploy".
-5. Para exponer la web, ve a Settings -> Networking y usa "Generate Domain".
-
-Railway detecta automaticamente Laravel y lo ejecuta con php-fpm y Caddy, usando `public` como document root.
-
-Si necesitas base de datos, sigue la seccion "Set up database, migrations, crons and workers" de la guia de Railway para Laravel.
-
 ## Roles y credenciales demo
 
 - `admin`: puede crear, editar y borrar proyectos, estudiantes y profesores.
