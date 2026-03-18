@@ -24,6 +24,7 @@ class UpdateStudentRequest extends FormRequest
             'year' => ['required', 'integer', 'min:1', 'max:6'],
             'email' => ['required', 'email', 'max:255', Rule::unique('students', 'email')->ignore($studentId)],
             'dni' => ['required', 'string', 'max:20', Rule::unique('students', 'dni')->ignore($studentId)],
+            'photo' => ['nullable', 'image', 'max:2048'],
         ];
     }
 }

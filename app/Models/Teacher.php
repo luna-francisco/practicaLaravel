@@ -15,5 +15,6 @@ class Teacher extends Model
         'departament',
         'email',
         'phone',
+        'photo_path',
     ];
 }

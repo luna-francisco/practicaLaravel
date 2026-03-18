@@ -16,9 +16,6 @@ Route::view("about","about");
 Route::view("noticias","noticias");
 Route::view("alumnos","alumnos");
 
-//Ruta de prueba para tarjeta 1
-Route::get('/tarjeta/{id}', [TarjetaController::class, 'show'])->name('tarjeta.show');
-
 //Pruebas de rutas parametrizadas
 Route::get("/alumno/{numero}/{seccion}", fn($numero, $seccion) =>  view("alumno", ["numero" => $numero, "seccion" => $seccion]));
 
@@ -34,11 +31,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-Route::resource('/projects', ProjectController::class);
-Route::resource('/students', StudentController::class)->only(['store', 'update', 'destroy']);
-Route::resource('/teachers', TeacherController::class)->only(['store', 'update', 'destroy']);
+    Route::get('/tarjeta/{id}', [TarjetaController::class, 'show'])->name('tarjeta.show');
+
+    Route::middleware('can:manage-catalogs')->group(function () {
+        Route::resource('/projects', ProjectController::class)->only(['store', 'update', 'destroy']);
+        Route::resource('/students', StudentController::class)->only(['store', 'update', 'destroy']);
+        Route::resource('/teachers', TeacherController::class)->only(['store', 'update', 'destroy']);
+    });
+});
 
 
 

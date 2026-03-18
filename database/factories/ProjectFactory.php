@@ -27,6 +27,7 @@ class ProjectFactory extends Factory
             "description" => $project,
             "hours" => $this->faker->numberBetween(10, 200),
             "start_date" => $this->faker->date(),
+            "image_path" => null,
         ];
     }
 }

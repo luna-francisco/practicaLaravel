@@ -26,38 +26,88 @@
             <p class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{{ session('status') }}</p>
         @endif
 
-        <div class="flex items-center justify-between">
-            <p class="text-sm text-slate-600">Total: {{ $teachers->count() }} profesores</p>
-            <button class="btn-brand font-semibold" id="open-create-teacher-modal" type="button">Añadir profesor</button>
+        @if ($errors->any())
+            <div class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+                <p class="font-semibold">Hay errores en el formulario.</p>
+                <ul class="mt-1 list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <p class="text-sm text-slate-600">Total: {{ $teachers->total() }} profesores</p>
+            @can('manage-catalogs')
+                <button class="btn-brand font-semibold" id="open-create-teacher-modal" type="button">Añadir profesor</button>
+            @endcan
         </div>
+
+        <form method="GET" class="grid gap-3 md:grid-cols-[1.3fr_0.9fr_auto] items-end">
+            <div class="field-stack">
+                <label for="teacher-search" class="text-sm font-semibold text-slate-700">Buscar</label>
+                <input id="teacher-search" name="q" type="text" value="{{ request('q') }}" class="pro-input w-full" placeholder="Nombre, email o telefono">
+            </div>
+            <div class="field-stack">
+                <label for="teacher-departament-filter" class="text-sm font-semibold text-slate-700">Departamento</label>
+                <select id="teacher-departament-filter" name="departament" class="pro-input w-full">
+                    <option value="">Todos</option>
+                    @foreach ($departments as $department)
+                        <option value="{{ $department }}" {{ $department === request('departament') ? 'selected' : '' }}>
+                            {{ $department }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex gap-2">
+                <button class="btn-ghost-light btn-sm font-semibold" type="submit">Filtrar</button>
+                @if (request()->query())
+                    <a href="{{ route('tarjeta.show', 3) }}" class="btn-ghost-light btn-sm">Limpiar</a>
+                @endif
+            </div>
+        </form>
 
         <div class="grid gap-3 md:grid-cols-2">
             @forelse ($teachers as $teacher)
                 <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                    <h2 class="font-semibold text-slate-900">{{ $teacher->name }}</h2>
-                    <p class="mt-1 text-sm text-slate-600">{{ $teacher->email }}</p>
-                    <p class="mt-2 text-xs text-slate-500">Departamento: {{ $teacher->departament }} | Telefono: {{ $teacher->phone }}</p>
-
-                    <div class="mt-4 flex items-center gap-2">
-                        <button
-                            class="btn-ghost-light btn-sm font-semibold"
-                            type="button"
-                            data-edit-teacher-btn
-                            data-id="{{ $teacher->id }}"
-                            data-name="{{ $teacher->name }}"
-                            data-departament="{{ $teacher->departament }}"
-                            data-email="{{ $teacher->email }}"
-                            data-phone="{{ $teacher->phone }}"
-                        >
-                            Editar
-                        </button>
-
-                        <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar este profesor?');">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 hover:border-red-300 font-semibold" type="submit">Borrar</button>
-                        </form>
+                    <div class="flex items-start gap-3">
+                        <div class="h-12 w-12 rounded-full overflow-hidden bg-slate-100 flex items-center justify-center text-sm font-semibold text-slate-600">
+                            @if ($teacher->photo_path)
+                                <img src="{{ asset('storage/' . $teacher->photo_path) }}" alt="{{ $teacher->name }}" class="h-full w-full object-cover">
+                            @else
+                                {{ strtoupper(substr($teacher->name, 0, 1)) }}
+                            @endif
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="font-semibold text-slate-900">{{ $teacher->name }}</h2>
+                            <p class="mt-1 text-sm text-slate-600">{{ $teacher->email }}</p>
+                            <p class="mt-2 text-xs text-slate-500">Departamento: {{ $teacher->departament }} | Telefono: {{ $teacher->phone }}</p>
+                        </div>
                     </div>
+
+                    @can('manage-catalogs')
+                        <div class="mt-4 flex items-center gap-2">
+                            <button
+                                class="btn-ghost-light btn-sm font-semibold"
+                                type="button"
+                                data-edit-teacher-btn
+                                data-id="{{ $teacher->id }}"
+                                data-name="{{ $teacher->name }}"
+                                data-departament="{{ $teacher->departament }}"
+                                data-email="{{ $teacher->email }}"
+                                data-phone="{{ $teacher->phone }}"
+                            >
+                                Editar
+                            </button>
+
+                            <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar este profesor?');">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 hover:border-red-300 font-semibold" type="submit">Borrar</button>
+                            </form>
+                        </div>
+                    @endcan
                 </article>
             @empty
                 <article class="rounded-xl border border-slate-200 bg-white p-5 text-slate-600 md:col-span-2">
@@ -65,124 +115,147 @@
                 </article>
             @endforelse
         </div>
-    </div>
 
-    <div id="create-teacher-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/40 p-4">
-        <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
-            <div class="mb-4 flex items-center justify-between">
-                <h3 class="display-font text-xl font-bold text-slate-900">Nuevo profesor</h3>
-                <button type="button" id="close-create-teacher-modal" class="btn-ghost-light btn-sm">Cerrar</button>
-            </div>
-
-            <form action="{{ route('teachers.store') }}" method="POST" class="space-y-3">
-                @csrf
-                <div class="field-stack">
-                    <label for="create-teacher-name" class="text-sm font-semibold text-slate-700">Nombre</label>
-                    <input id="create-teacher-name" name="name" type="text" value="{{ old('name') }}" class="pro-input w-full" required>
-                    @error('name')
-                        <p class="text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="field-stack">
-                    <label for="create-teacher-email" class="text-sm font-semibold text-slate-700">Email</label>
-                    <input id="create-teacher-email" name="email" type="email" value="{{ old('email') }}" class="pro-input w-full" required>
-                    @error('email')
-                        <p class="text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="grid gap-3 sm:grid-cols-2">
-                    <div class="field-stack">
-                        <label for="create-teacher-departament" class="text-sm font-semibold text-slate-700">Departamento</label>
-                        <select id="create-teacher-departament" name="departament" class="pro-input w-full" required>
-                            <option value="" disabled {{ old('departament') ? '' : 'selected' }}>Selecciona un departamento</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ $department }}" {{ old('departament') === $department ? 'selected' : '' }}>
-                                    {{ $department }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('departament')
-                            <p class="text-xs text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="field-stack">
-                        <label for="create-teacher-phone" class="text-sm font-semibold text-slate-700">Telefono</label>
-                        <input id="create-teacher-phone" name="phone" type="text" value="{{ old('phone') }}" class="pro-input w-full" required>
-                        @error('phone')
-                            <p class="text-xs text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="pt-2 flex items-center justify-end gap-2">
-                    <button type="button" id="cancel-create-teacher-modal" class="btn-ghost-light font-semibold">Cancelar</button>
-                    <button type="submit" class="btn-brand font-semibold">Guardar profesor</button>
-                </div>
-            </form>
+        <div class="pt-2">
+            {{ $teachers->links() }}
         </div>
     </div>
 
-    <div id="edit-teacher-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/40 p-4">
-        <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
-            <div class="mb-4 flex items-center justify-between">
-                <h3 class="display-font text-xl font-bold text-slate-900">Editar profesor</h3>
-                <button type="button" id="close-edit-teacher-modal" class="btn-ghost-light btn-sm">Cerrar</button>
+    @can('manage-catalogs')
+        <div id="create-teacher-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/40 p-4">
+            <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="display-font text-xl font-bold text-slate-900">Nuevo profesor</h3>
+                    <button type="button" id="close-create-teacher-modal" class="btn-ghost-light btn-sm">Cerrar</button>
+                </div>
+
+                <form action="{{ route('teachers.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3">
+                    @csrf
+                    <div class="field-stack">
+                        <label for="create-teacher-name" class="text-sm font-semibold text-slate-700">Nombre</label>
+                        <input id="create-teacher-name" name="name" type="text" value="{{ old('name') }}" class="pro-input w-full" required>
+                        @error('name')
+                            <p class="text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="field-stack">
+                        <label for="create-teacher-email" class="text-sm font-semibold text-slate-700">Email</label>
+                        <input id="create-teacher-email" name="email" type="email" value="{{ old('email') }}" class="pro-input w-full" required>
+                        @error('email')
+                            <p class="text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <div class="field-stack">
+                            <label for="create-teacher-departament" class="text-sm font-semibold text-slate-700">Departamento</label>
+                            <select id="create-teacher-departament" name="departament" class="pro-input w-full" required>
+                                <option value="" disabled {{ old('departament') ? '' : 'selected' }}>Selecciona un departamento</option>
+                                @foreach ($departments as $department)
+                                    <option value="{{ $department }}" {{ old('departament') === $department ? 'selected' : '' }}>
+                                        {{ $department }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('departament')
+                                <p class="text-xs text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="field-stack">
+                            <label for="create-teacher-phone" class="text-sm font-semibold text-slate-700">Telefono</label>
+                            <input id="create-teacher-phone" name="phone" type="text" value="{{ old('phone') }}" class="pro-input w-full" required>
+                            @error('phone')
+                                <p class="text-xs text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="field-stack">
+                        <label for="create-teacher-photo" class="text-sm font-semibold text-slate-700">Foto (opcional)</label>
+                        <input id="create-teacher-photo" name="photo" type="file" accept="image/*" class="pro-input w-full">
+                        @error('photo')
+                            <p class="text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="pt-2 flex items-center justify-end gap-2">
+                        <button type="button" id="cancel-create-teacher-modal" class="btn-ghost-light font-semibold">Cancelar</button>
+                        <button type="submit" class="btn-brand font-semibold">Guardar profesor</button>
+                    </div>
+                </form>
             </div>
-
-            <form id="edit-teacher-form" action="" method="POST" class="space-y-3">
-                @csrf
-                @method('PUT')
-                <input type="hidden" id="edit-teacher-id" name="_edit_teacher_id" value="">
-
-                <div class="field-stack">
-                    <label for="edit-teacher-name" class="text-sm font-semibold text-slate-700">Nombre</label>
-                    <input id="edit-teacher-name" name="name" type="text" value="" class="pro-input w-full" required>
-                    @error('name')
-                        <p class="text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="field-stack">
-                    <label for="edit-teacher-email" class="text-sm font-semibold text-slate-700">Email</label>
-                    <input id="edit-teacher-email" name="email" type="email" value="" class="pro-input w-full" required>
-                    @error('email')
-                        <p class="text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="grid gap-3 sm:grid-cols-2">
-                    <div class="field-stack">
-                        <label for="edit-teacher-departament" class="text-sm font-semibold text-slate-700">Departamento</label>
-                        <select id="edit-teacher-departament" name="departament" class="pro-input w-full" required>
-                            <option value="" disabled>Selecciona un departamento</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ $department }}">{{ $department }}</option>
-                            @endforeach
-                        </select>
-                        @error('departament')
-                            <p class="text-xs text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="field-stack">
-                        <label for="edit-teacher-phone" class="text-sm font-semibold text-slate-700">Telefono</label>
-                        <input id="edit-teacher-phone" name="phone" type="text" value="" class="pro-input w-full" required>
-                        @error('phone')
-                            <p class="text-xs text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="pt-2 flex items-center justify-end gap-2">
-                    <button type="button" id="cancel-edit-teacher-modal" class="btn-ghost-light font-semibold">Cancelar</button>
-                    <button type="submit" class="btn-brand font-semibold">Guardar cambios</button>
-                </div>
-            </form>
         </div>
-    </div>
+
+        <div id="edit-teacher-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/40 p-4">
+            <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="display-font text-xl font-bold text-slate-900">Editar profesor</h3>
+                    <button type="button" id="close-edit-teacher-modal" class="btn-ghost-light btn-sm">Cerrar</button>
+                </div>
+
+                <form id="edit-teacher-form" action="" method="POST" enctype="multipart/form-data" class="space-y-3">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="edit-teacher-id" name="_edit_teacher_id" value="">
+
+                    <div class="field-stack">
+                        <label for="edit-teacher-name" class="text-sm font-semibold text-slate-700">Nombre</label>
+                        <input id="edit-teacher-name" name="name" type="text" value="" class="pro-input w-full" required>
+                        @error('name')
+                            <p class="text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="field-stack">
+                        <label for="edit-teacher-email" class="text-sm font-semibold text-slate-700">Email</label>
+                        <input id="edit-teacher-email" name="email" type="email" value="" class="pro-input w-full" required>
+                        @error('email')
+                            <p class="text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <div class="field-stack">
+                            <label for="edit-teacher-departament" class="text-sm font-semibold text-slate-700">Departamento</label>
+                            <select id="edit-teacher-departament" name="departament" class="pro-input w-full" required>
+                                <option value="" disabled>Selecciona un departamento</option>
+                                @foreach ($departments as $department)
+                                    <option value="{{ $department }}">{{ $department }}</option>
+                                @endforeach
+                            </select>
+                            @error('departament')
+                                <p class="text-xs text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="field-stack">
+                            <label for="edit-teacher-phone" class="text-sm font-semibold text-slate-700">Telefono</label>
+                            <input id="edit-teacher-phone" name="phone" type="text" value="" class="pro-input w-full" required>
+                            @error('phone')
+                                <p class="text-xs text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="field-stack">
+                        <label for="edit-teacher-photo" class="text-sm font-semibold text-slate-700">Actualizar foto (opcional)</label>
+                        <input id="edit-teacher-photo" name="photo" type="file" accept="image/*" class="pro-input w-full">
+                        <p class="text-xs text-slate-500">Si no subes una foto, se mantiene la actual.</p>
+                        @error('photo')
+                            <p class="text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="pt-2 flex items-center justify-end gap-2">
+                        <button type="button" id="cancel-edit-teacher-modal" class="btn-ghost-light font-semibold">Cancelar</button>
+                        <button type="submit" class="btn-brand font-semibold">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endcan
 
     <script>
         (() => {

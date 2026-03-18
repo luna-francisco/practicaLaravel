@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -32,7 +33,17 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        Project::create($request->validated());
+        $data = $request->validated();
+
+        if (array_key_exists('image', $data)) {
+            unset($data['image']);
+        }
+
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('projects', 'public');
+        }
+
+        Project::create($data);
 
         return redirect()
             ->route('tarjeta.show', 1)
@@ -60,7 +71,21 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $project->update($request->validated());
+        $data = $request->validated();
+
+        if (array_key_exists('image', $data)) {
+            unset($data['image']);
+        }
+
+        if ($request->hasFile('image')) {
+            if ($project->image_path) {
+                Storage::disk('public')->delete($project->image_path);
+            }
+
+            $data['image_path'] = $request->file('image')->store('projects', 'public');
+        }
+
+        $project->update($data);
 
         return redirect()
             ->route('tarjeta.show', 1)
@@ -72,6 +97,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->image_path) {
+            Storage::disk('public')->delete($project->image_path);
+        }
+
         $project->delete();
 
         return redirect()

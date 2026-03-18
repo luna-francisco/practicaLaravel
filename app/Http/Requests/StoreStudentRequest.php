@@ -21,6 +21,7 @@ class StoreStudentRequest extends FormRequest
             'year' => ['required', 'integer', 'min:1', 'max:6'],
             'email' => ['required', 'email', 'max:255', 'unique:students,email'],
             'dni' => ['required', 'string', 'max:20', 'unique:students,dni'],
+            'photo' => ['nullable', 'image', 'max:2048'],
         ];
     }
 }

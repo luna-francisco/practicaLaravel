@@ -1,31 +1,39 @@
 ## Instituto - Gestion web en Laravel
 
-Aplicacion web para la gestion basica de un instituto. Incluye autenticacion, panel principal con accesos rapidos y catalogos con CRUD para proyectos, estudiantes y profesores.
+Aplicacion web para la gestion basica de un instituto. Incluye autenticacion, panel principal con accesos rapidos y catalogos CRUD para proyectos, estudiantes y profesores.
+
+## Contenido
+
+- Funcionalidad
+- Flujo de uso
+- Requisitos
+- Puesta en marcha
+- Roles y credenciales demo
+- Rutas principales
 
 ## Funcionalidad
 
-- Autenticacion de usuarios (registro, login, recuperacion y verificacion de email).
-- Pagina principal con tarjetas de acceso.
-- Catalogo de proyectos con alta, edicion y borrado.
-- Catalogo de estudiantes con alta, edicion y borrado.
-- Catalogo de profesores con alta, edicion y borrado.
+- Registro, login, recuperacion de contraseña y verificacion de email.
+- Pagina principal con tarjetas de acceso a los modulos.
+- CRUD de proyectos, estudiantes y profesores con modales.
+- Busqueda, filtros y paginacion en catalogos (8 por pagina).
+- Subida de imagenes para proyectos y fotos para estudiantes/profesores.
 
-## Funcionamiento
+## Flujo de uso
 
-- La ruta `/` muestra una portada publica con CTA de registro/login.
+- `/` muestra una portada publica con CTA de registro/login.
 - Tras iniciar sesion se muestran tarjetas que enlazan a `/tarjeta/{id}`.
-- `tarjeta/1` lista proyectos y permite CRUD con modales.
-- `tarjeta/2` lista estudiantes y permite CRUD con modales.
-- `tarjeta/3` lista profesores y permite CRUD con modales.
-- El backend usa controladores con Form Requests para validar datos y modelos Eloquent para persistir en MySQL.
+- `tarjeta/1` muestra proyectos.
+- `tarjeta/2` muestra estudiantes.
+- `tarjeta/3` muestra profesores.
 
 ## Requisitos
 
 - PHP 8.x y Composer.
 - Node.js y NPM.
-- Docker para la base de datos MySQL (incluye phpMyAdmin).
+- Docker (MySQL y phpMyAdmin incluidos).
 
-## Como iniciarlo
+## Puesta en marcha
 
 1. Instala dependencias:
 
@@ -47,15 +55,21 @@ php artisan key:generate
 docker compose up -d
 ```
 
-Por defecto la base de datos queda en `DB_PORT=23306` y phpMyAdmin en `http://localhost:8100`. El archivo `datos.sql` se importa automaticamente al iniciar el contenedor.
+La base de datos queda en `DB_PORT=23306` y phpMyAdmin en `http://localhost:8100`. El archivo `datos.sql` se importa al iniciar el contenedor.
 
-4. Ejecuta migraciones:
+4. Ejecuta migraciones y seed:
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
-5. Arranca la aplicacion:
+5. Publica almacenamiento para imagenes:
+
+```bash
+php artisan storage:link
+```
+
+6. Arranca la aplicacion:
 
 ```bash
 php artisan serve
@@ -69,3 +83,22 @@ npm run local
 ```
 
 La app queda disponible en `http://localhost:8000`.
+
+## Roles y credenciales demo
+
+- `admin`: puede crear, editar y borrar proyectos, estudiantes y profesores.
+- `user`: acceso de solo lectura a los catalogos.
+
+Credenciales demo:
+
+- Email: `admin@demo.test`
+- Password: `admin1234`
+
+Estas credenciales se crean en el seeder. Se pueden modificar en `database/seeders/DatabaseSeeder.php`.
+
+## Rutas principales
+
+- `/` inicio publico.
+- `/tarjeta/1` catalogo de proyectos.
+- `/tarjeta/2` catalogo de estudiantes.
+- `/tarjeta/3` catalogo de profesores.

@@ -27,8 +27,9 @@ class StudentFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'edad' => $this->faker->numberBetween(18, 65),
-            'f_nac' => $this->faker->date(),
+            'year' => $this->faker->numberBetween(1, 6),
+            'dni' => strtoupper($this->faker->unique()->bothify('########?')),
+            'photo_path' => null,
         ];
     }
 }

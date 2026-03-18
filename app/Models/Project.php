@@ -15,5 +15,6 @@ class Project extends Model
         'description',
         'hours',
         'start_date',
+        'image_path',
     ];
 }

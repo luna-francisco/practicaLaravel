@@ -15,5 +15,6 @@ class Student extends Model
         'email',
         'year',
         'dni',
+        'photo_path',
     ];
 }

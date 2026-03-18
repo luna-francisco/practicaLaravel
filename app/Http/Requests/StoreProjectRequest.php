@@ -26,6 +26,7 @@ class StoreProjectRequest extends FormRequest
             'description' => ['required', 'string', 'max:255'],
             'hours' => ['required', 'integer', 'min:1', 'max:1000'],
             'start_date' => ['nullable', 'date'],
+            'image' => ['nullable', 'image', 'max:2048'],
         ];
     }
 }

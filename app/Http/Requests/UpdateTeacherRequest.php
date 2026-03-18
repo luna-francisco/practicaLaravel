@@ -24,6 +24,7 @@ class UpdateTeacherRequest extends FormRequest
             'departament' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('teachers', 'email')->ignore($teacherId)],
             'phone' => ['required', 'string', 'max:25'],
+            'photo' => ['nullable', 'image', 'max:2048'],
         ];
     }
 }
